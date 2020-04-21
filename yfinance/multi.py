@@ -110,11 +110,11 @@ def download(tickers, start=None, end=None, actions=False, threads=True,
         shared._PROGRESS_BAR.completed()
 
     if shared._ERRORS:
-        print('\n%.f Failed download%s:' % (
-            len(shared._ERRORS), 's' if len(shared._ERRORS) > 1 else ''))
-        # print(shared._ERRORS)
-        print("\n".join(['- %s: %s' %
-                         v for v in list(shared._ERRORS.items())]))
+        error_message = '%.f/%.f Failed download%s: %s' % (
+            len(shared._ERRORS), len(shared._DFS), 's' if len(shared._ERRORS) > 1 else '',
+            "\n".join(['- %s: %s' % v for v in list(shared._ERRORS.items())]))
+        print('\n[yfinance] %s' % (error_message))
+        raise RuntimeError(error_message)
 
     if len(tickers) == 1:
         return shared._DFS[tickers[0]]
