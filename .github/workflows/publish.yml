@@ -1,0 +1,17 @@
+name: Publish
+on:
+  push:
+    branches: [master]
+    tags: ["*"]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Package
+        run: |
+          docker build -t zhenwenc/yfinance .
+      - name: Publish
+        run: |
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+          docker push zhenwenc/yfinance
